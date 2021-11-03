@@ -1,13 +1,22 @@
 ---
 - hosts: all
   become: true
+  vars: 
+    swap_file_size_mb: '1024'
+    php_version: '7.4'
+    php_enable_webserver: false
+
   roles:
     - { role: setup, tags: ['setup'] }
 
+    - geerlingguy.swap    
+
     - { role: mariadb, tags: ['mysql', 'mariadb', 'db', 'lemp'] }
 
-    - { role: php, tags: ['php', 'web', 'php-fpm', 'lemp'] }
+    - geerlingguy.php-versions
+
+    - geerlingguy.php
 
     - { role: nginx, tags: ['nginx', 'web', 'http', 'lemp'] }
 
-    - { role: composer, tags: ['composer'] }
+    - geerlingguy.composer
